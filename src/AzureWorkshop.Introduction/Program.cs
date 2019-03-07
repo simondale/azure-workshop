@@ -19,6 +19,13 @@ namespace AzureWorkshop.Introduction
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    config.AddEnvironmentVariables();
+                    config.AddCommandLine(Environment.GetCommandLineArgs().Skip(1).ToArray());
+                    var cfg = config.Build();
+                    config.AddAzureKeyVault(cfg["KeyVault:Vault"], cfg["KeyVault:ClientId"], cfg["KeyVault:ClientSecret"]);
+                })
                 .UseStartup<Startup>();
     }
 }
