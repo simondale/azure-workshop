@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration.UserSecrets;
+
+[assembly: UserSecretsId("AzureWorkshop.Introduction")]
 
 namespace AzureWorkshop.Introduction
 {
@@ -21,8 +18,7 @@ namespace AzureWorkshop.Introduction
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>
                 {
-                    config.AddEnvironmentVariables();
-                    config.AddCommandLine(Environment.GetCommandLineArgs().Skip(1).ToArray());
+                    config.AddUserSecrets<Program>(false);
                     var cfg = config.Build();
                     config.AddAzureKeyVault(cfg["KeyVault:Vault"], cfg["KeyVault:ClientId"], cfg["KeyVault:ClientSecret"]);
                 })

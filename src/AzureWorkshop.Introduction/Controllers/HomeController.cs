@@ -5,13 +5,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AzureWorkshop.Introduction.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace AzureWorkshop.Introduction.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IConfiguration configuration;
+
+        public HomeController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public IActionResult Index()
         {
+            ViewData["Message"] = configuration?["Message"];
             return View();
         }
 
